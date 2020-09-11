@@ -1,0 +1,112 @@
+<robot name="jijin_manipulator">
+
+  #define a base_link on the ground
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.2"/>
+      </geometry>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.2"/>
+      </geometry>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+       <origin xyz="0 0 0.1" rpy="0 0 0"/>
+       <mass value="1"/>
+       <inertia ixx="1"  ixy="0"  ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+
+  #define a link 1 rotate around z
+  <link name="link_1">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.2"/>
+      </geometry>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.2"/>
+      </geometry>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+       <origin xyz="0 0 0.1" rpy="0 0 0"/>
+       <mass value="1"/>
+       <inertia ixx="1"  ixy="0"  ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <joint name="link_1_joint" type="continuous">
+    <parent link="base_link"/>
+    <child  link="link_1"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0" />
+    <axis xyz="0 0 1"/>
+    <limit effort="10000" velocity="0.1"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+  #define a link 2 rotate around x
+  <link name="link_2">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.4"/>
+      </geometry>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.4"/>
+      </geometry>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+       <origin xyz="0 0 0.2" rpy="0 0 0"/>
+       <mass value="1"/>
+       <inertia ixx="1"  ixy="0"  ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <joint name="link_2_joint" type="continuous">
+    <parent link="link_1"/>
+    <child  link="link_2"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0" />
+    <axis xyz="1 0 0"/>
+    <limit effort="10000" velocity="0.1"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+  #define a link 3 rotate around x
+  <link name="link_3">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.4"/>
+      </geometry>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.4"/>
+      </geometry>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+       <origin xyz="0 0 0.2" rpy="0 0 0"/>
+       <mass value="1"/>
+       <inertia ixx="1"  ixy="0"  ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <joint name="link_3_joint" type="continuous">
+    <parent link="link_2"/>
+    <child  link="link_3"/>
+    <origin xyz="0 0 0.4" rpy="0 0 0" />
+    <axis xyz="1 0 0"/>
+    <limit effort="10000" velocity="0.1"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+</robot>
+

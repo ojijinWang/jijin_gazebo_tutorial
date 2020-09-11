@@ -1,0 +1,13 @@
+<launch>
+
+  <param name="use_gui" value="ture"/>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <node name="read_jointstate_publish_cmd_gazebo_3dof" pkg="jijin_manipulator_control" type="read_jointstate_publish_cmd_gazebo_3dof" respawn="true" output="screen">
+    <remap from="joint_states_in" to="joint_states"/>
+    <remap from="joint_1_angle_out" to="/jijin_manipulator/link_1_joint_position_controller/command"/>
+    <remap from="joint_2_angle_out" to="/jijin_manipulator/link_2_joint_position_controller/command"/>
+    <remap from="joint_3_angle_out" to="/jijin_manipulator/link_3_joint_position_controller/command"/>
+  </node>
+
+</launch>

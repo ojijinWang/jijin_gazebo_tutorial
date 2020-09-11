@@ -1,0 +1,16 @@
+obstacle_range: 10.0
+# the maximum range sensor reading that will result in an obstacle being put into the costmap
+raytrace_range: 10.0
+# the range to which we will raytrace freespace given a sensor reading. 
+
+#footprint determine the area
+footprint: [[-0.35, -0.30], [-0.35, 0.3], [0.35, 0.3], [0.35, -0.3]]
+footprint_padding: 0.01
+#robot_radius: ir_of_robot
+
+inflation_layer:
+  inflation_radius: 1.0
+#the min range the robot is away form walls.
+
+
+

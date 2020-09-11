@@ -1,0 +1,28 @@
+TebLocalPlannerROS:
+	acc_lim_x:	0.5
+	acc_lim_theta:	0.5
+	max_vel_x:	0.7
+	max_vel_x_backwards:	0.7
+	max_vel_theta:	0.314159
+
+  # footprint
+	footprint_model/type:	"polygon"
+	footprint_model/vertices: [[-0.35, -0.25], [-0.35, 0.25], [0.35, 0.25], [0.35, -0.25]]
+
+  # Goal Tolerance Parameters
+	xy_goal_tolerance:	0.2
+	yaw_goal_tolerance:	0.2
+	free_goal_vel:		false
+	# Remove the goal velocity constraint such that the robot can arrive at the goal with maximum speed 
+
+
+  # Obstacle
+	min_obstacle_dist: 0.5
+	# Minimum desired separation from obstacles in meters 
+
+	include_costmap_obstacles: true 
+
+
+  # Miscellaneous
+	odom_topic:	odom
+	map_frame: 	map

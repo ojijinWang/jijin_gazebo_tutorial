@@ -1,0 +1,91 @@
+<robot name="jijin_wheel_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find jijin_mobile_robot_description)/urdf/jijin_wheel_robot.urdf" />
+
+  #add firection to wheel left
+  <gazebo reference="wheel_left">
+    <selfCollide>false</selfCollide>
+    <turnGravityOff>false</turnGravityOff>
+    <mu1 value="1.0"/>
+    <mu2 value="1.0"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+  #add firection to wheel right
+  <gazebo reference="wheel_right">
+    <selfCollide>false</selfCollide>
+    <turnGravityOff>false</turnGravityOff>
+    <mu1 value="1.0"/>
+    <mu2 value="1.0"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+
+  #differential drive controller
+  <gazebo>
+    <plugin name="differential_drive_controller"
+      filename="libgazebo_ros_diff_drive.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic> 
+      <odometryFrame>odom</odometryFrame> 
+      <odometrySource>world</odometrySource>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <publishOdomTF>true</publishOdomTF>
+      <publishWheelTF>true</publishWheelTF>
+      <publishTf>1</publishTf>
+      <publishWheelJointState>false</publishWheelJointState>
+      <legacyMode>false</legacyMode>
+      <updateRate>30</updateRate>
+      <leftJoint>wheel_left_joint</leftJoint>
+      <rightJoint>wheel_right_joint</rightJoint>
+      <wheelSeparation>0.6</wheelSeparation>
+      <wheelDiameter>0.2</wheelDiameter>
+      <wheelAcceleration>1.8</wheelAcceleration>
+      <wheelTorque>10</wheelTorque>
+      <rosDebugLevel>Debug</rosDebugLevel>
+    </plugin>
+  </gazebo>
+
+  # add a laser_link and a laser
+  <link name="laser_link"/>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="laser_link"/>
+    <origin xyz="0 0 0.6" rpy="0 0 0" />
+  </joint>
+  <gazebo reference="laser_link">
+    <sensor type="ray" name="head_hokuyo_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>20</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>1280</samples>
+            <resolution>1</resolution>
+            <min_angle>-2.72</min_angle>
+            <max_angle>2.72</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>1.0</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.0001</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_lidar_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>laser_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>
+

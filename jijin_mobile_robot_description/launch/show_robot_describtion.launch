@@ -1,0 +1,13 @@
+<launch>
+
+  <arg name="model_file_address" default="$(find jijin_mobile_robot_description)/urdf/jijin_wheel_robot.urdf.xacro"/>
+  <arg name="rviz_file_address" default="$(find jijin_mobile_robot_description)/rviz/show_description.rviz" />
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model_file_address)" />
+  <param name="use_gui" value="ture"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_file_address)" required="true" />
+
+</launch>

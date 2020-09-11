@@ -1,0 +1,12 @@
+global_costmap:
+  global_frame: /map
+  robot_base_frame: /base_link
+  update_frequency: 1.0
+  publish_frequency: 1.0
+  static_map: true
+
+  observation_sources: laser_scan_sensor
+  #observation_sources: point_cloud_sensor
+
+  laser_scan_sensor: {sensor_frame: laser_link, data_type: LaserScan, topic: scan_obstacle, marking: false, clearing: false}
+  #point_cloud_sensor: {sensor_frame: frame_name, data_type: PointCloud, topic: topic_name, marking: true, clearing: true}

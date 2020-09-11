@@ -1,0 +1,91 @@
+1. install ROS Kinetic
+### Setup your computer to accept software from packages
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-get update
+sudo apt-get install ros-kinetic-desktop-full
+
+sudo rosdep init
+rosdep update  ### must not be sudo. or there will be permision problem when roscore
+
+### add path
+echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+
+### the ros package to init catkin_ws
+sudo apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential
+
+### build the catkin workspace
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+catkin_init_workspace
+
+### make the empty workspace
+cd ~/catkin_ws
+catkin_make
+
+### add path so that we dont have to type it everytime we open a new terminal
+echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+### active path
+source ~/.bashrc
+###check if the path of workspace is in
+$ echo $ROS_PACKAGE_PATH
+
+
+2. install other ROS pkg
+sudo apt-get install ros-kinetic-urg-node ros-kinetic-gmapping ros-kinetic-move-base ros-kinetic-navigation ros-kinetic-nav2d ros-kinetic-teb-local-planner ros-kinetic-ps3joy libsdl1.2-dev ros-kinetic-pcl-ros ros-kinetic-pcl-conversions ros-kinetic-pcl-msgs ros-kinetic-pointcloud-to-laserscan ros-kinetic-octomap-server libyaml-cpp-dev libsdl-image1.2-dev ros-kinetic-visp-auto-tracker libbullet-dev liboctomap-dev libpcap0.8-dev 
+
+$ sudo apt-get install ros-kinetic-urg-node		/*for utm-30lx to publish LaserScan*/
+$ sudo apt-get install ros-kinetic-gmapping		/*for slam*/
+$ sudo apt-get install ros-kinetic-move-base		/*for navigation basic*/
+$ sudo apt-get install ros-kinetic-navigation		/*for navigation basic*/
+$ sudo apt-get install ros-kinetic-nav2d			/*for navigation planner*/
+$ sudo apt-get install ros-kinetic-teb-local-planner	/*for navigation new local planner stack*/
+$ sudo apt-get install ros-kinetic-ps3joy		/*for ps3 joystick node*/
+$ sudo apt-get install libsdl1.2-dev			/*for keyboard node*/
+$ sudo apt-get install ros-kinetic-pcl-ros		/*for pcl(point-cloud-lib)*/
+$ sudo apt-get install ros-kinetic-pcl-conversions	/*for pcl(point-cloud-lib)*/
+$ sudo apt-get install ros-kinetic-pcl-msgs 		/*for pcl(point-cloud-lib)*/
+$ sudo apt-get install ros-kinetic-pointcloud-to-laserscan
+$ sudo apt-get install ros-kinetic-octomap-server
+$ sudo apt-get install libyaml-cpp-dev			/*lib to read .yaml files. used as read 2d map file*/
+$ sudo apt-get install libsdl-image1.2-dev		/*lib to read .pgm files. used as read 2d map file*/
+$ sudo apt-get install ros-kinetic-visp-auto-tracker	/*for QR code detector*/
+$ sudo apt-get install libbullet-dev			/*need lib depends of `bullet` in ground filter*/
+$ sudo apt-get install liboctomap-dev
+$ sudo apt-get install libpcap0.8-dev			/*need lib depends of VLP-16*/
+
+
+3. inatall moveit
+sudo apt-get install ros-kinetic-moveit
+sudo apt-get install ros-kinetic-moveit-visual-tools
+
+# build up model form start
+# this will build a demo launch file automaticily form a raw urdf/xaml robot model file 
+roslaunch moveit_setup_assistant setup_assistant.launch
+
+4. install gazebo
+## install Gazebo
+sudo apt-get install ros-kinetic-gazebo-ros
+sudo apt-get install ros-kinetic-gazebo-ros-pkgs 
+sudo apt-get install ros-kinetic-gazebo-ros-control
+
+## download all Gazebo models 
+# Download all model archive files
+wget -l 2 -nc -r "http://models.gazebosim.org/" --accept gz
+# This is the folder into which wget downloads the model archives
+cd "models.gazebosim.org"
+# Extract all model archives
+for i in *
+do
+  tar -zvxf "$i/model.tar.gz"
+done
+# Copy extracted files to the local model folder
+cp -vfR * "$HOME/.gazebo/models/"
+
+# install gazebo plugin
+sudo apt-get install ros-kinetic-joint-state-controller ros-kinetic-diff-drive-controller ros-kinetic-velocity-controllers ros-kinetic-effort-controllers ros-kinetic-hector-gazebo 
+
+
+5. remove the gedit backup file
+find ./ -name '*~' -exec rm '{}' \; -print -or -name ".*~" -exec rm {} \; -print
+

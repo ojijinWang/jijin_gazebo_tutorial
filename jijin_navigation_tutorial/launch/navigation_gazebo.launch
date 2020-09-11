@@ -1,0 +1,72 @@
+<launch>
+
+  <arg name="model_file_address" 			default="$(find jijin_mobile_robot_description)/urdf/jijin_wheel_robot.urdf.xacro" />
+  <arg name="model_controller_config_file_address" 	default="$(find jijin_mobile_robot_description)/urdf/wheel_control.yaml" />
+  <arg name="gazebo_world_file_address" 		default="$(find jijin_mobile_robot_description)/world/jijin_wheel_robot.world" />
+  <arg name="rviz_file_address" 			default="$(find jijin_navigation_tutorial)/rviz/navigation.rviz" />
+  <arg name="robot_name" 				default="jijin_wheel_robot" />
+
+  <param name="use_sim_time" value="true"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg gazebo_world_file_address)"/>
+    <arg name="debug" value="false" />
+    <arg name="gui" value="true" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="false"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(arg model_file_address)" /> 
+  <node name="spawn_athean_model" pkg="gazebo_ros" type="spawn_model" args="0 0 0 0 0 0 -unpause -urdf -param robot_description -model $(arg robot_name)"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" >
+    <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+  </node>
+
+  <rosparam command="load" file="$(arg model_controller_config_file_address)" />
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="$(arg robot_name)"
+	args="joint_state_controller"/>
+
+
+
+  <node name="slam_gmapping_fix"	pkg="gmapping_fix" 		type="slam_gmapping_fix"   output="screen">
+    <remap from="scan" to="/scan"/>
+    <param name="throttle_scans" value="1"/>
+    <param name="base_frame"     value="base_link"/>
+    <param name="odom_frame"     value="odom"/>
+    <param name="map_frame"      value="map"/>
+    <param name="occ_thresh"     value="0.25"/>
+    <param name="maxRange"       value="30.0"/>
+    <param name="minRange"       value="1.0"/>
+    <param name="maxUrange"      value="29.9"/>
+    <param name="lskip"          value="0"/>
+    <param name="particles"      value="30"/>
+    <param name="xmin"          value="-50.0"/>
+    <param name="xmax"          value="50.0"/>
+    <param name="ymin"          value="-50.0"/>
+    <param name="ymax"          value="50.0"/>
+    <param name="delta"          value="0.05"/>
+    <param name="map_update_interval"  value="1.0"/>
+    <param name="transform_publish_period"  value="0.05"/>
+    <param name="iterations"     value="1"/>       <!--number of scan for a scan matching used-->
+    <param name="angularUpdate"  value="0.1"/>     <!--update if odomerty bigger than-->
+    <param name="linearUpdate"   value="0.1"/>     <!--update if odomerty bigger than-->
+    <param name="srr"      value="0.02"/>   <!--Odometry error in translation as a function of translation; linear noise component (x and y)-->
+    <param name="stt"      value="0.02"/>   <!--Odometry error in rotation as a function of rotation; angular noise component (theta)-->
+    <param name="srt"      value="0.005"/>  <!--Odometry error in translation as a function of rotation; linear -> angular noise component-->
+    <param name="str"      value="0.005"/>  <!--Odometry error in rotation as a function of translation; angular -> linear noise component-->
+  </node>
+
+  <node name="move_base"	pkg="move_base"		type="move_base"	respawn="false"		output="screen">
+    <rosparam file="$(find jijin_navigation_tutorial)/params/planner_params/move_base_params.yaml" command="load" />
+    <rosparam file="$(find jijin_navigation_tutorial)/params/planner_params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find jijin_navigation_tutorial)/params/planner_params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find jijin_navigation_tutorial)/params/planner_params/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find jijin_navigation_tutorial)/params/planner_params/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find jijin_navigation_tutorial)/params/planner_params/teb_local_planner_params.yaml" command="load" />
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_file_address)" required="true" />
+
+</launch>

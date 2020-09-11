@@ -1,0 +1,92 @@
+<robot name="jijin_manipulator" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find jijin_manipulator_description)/urdf/manipulator.urdf" />
+
+  #add a link to fix the robot on the ground
+  <link name="world"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="world"/>
+    <child  link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  #add firection to links
+  <gazebo reference="base_link">
+    <selfCollide>false</selfCollide>
+    <turnGravityOff>false</turnGravityOff>
+    <mu1 value="1.0"/>
+    <mu2 value="1.0"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+  <gazebo reference="link_1">
+    <selfCollide>false</selfCollide>
+    <turnGravityOff>false</turnGravityOff>
+    <mu1 value="1.0"/>
+    <mu2 value="1.0"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+  <gazebo reference="link_2">
+    <selfCollide>false</selfCollide>
+    <turnGravityOff>false</turnGravityOff>
+    <mu1 value="1.0"/>
+    <mu2 value="1.0"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+  <gazebo reference="link_3">
+    <selfCollide>false</selfCollide>
+    <turnGravityOff>false</turnGravityOff>
+    <mu1 value="1.0"/>
+    <mu2 value="1.0"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <fdir1 value="1 0 0"/>
+  </gazebo>
+
+  #name controllor (name which joint can be controlled force/velocity/position)
+  <transmission name="link_1_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_1_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="link_1_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="link_2_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_2_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="link_2_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="link_3_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_3_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="link_3_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  #add the plugine to active the controllors
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/jijin_manipulator</robotNamespace>
+      <legacyModeNS>DefaultRobotHWSim</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+</robot>
+

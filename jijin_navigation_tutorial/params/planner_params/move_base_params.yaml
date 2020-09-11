@@ -1,0 +1,10 @@
+base_local_planner: teb_local_planner/TebLocalPlannerROS
+#base_global_planner: navfn/NavfnROS
+
+planner_frequency: 0.5
+
+#max_planning_retries: -1
+
+controller_patience: 2.0
+
+

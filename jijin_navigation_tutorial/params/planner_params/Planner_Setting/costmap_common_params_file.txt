@@ -1,0 +1,31 @@
+Published Topics:
+~<name>/footprint (geometry_msgs/Polygon)
+~<name>/grid (nav_msgs/OccupancyGrid)
+~<name>/grid_updates (map_msgs/OccupancyGridUpdate)
+~<name>/voxel_grid (costmap_2d/VoxelGrid)
+
+Parameters:
+~<name>/global_frame (string, default: "/map")
+	The global frame for the costmap to operate in. 
+~<name>/robot_base_frame (string, default: "base_link")
+	The name of the frame for the base link of the robot. 
+~<name>/transform_tolerance (double, default: 0.2)
+	Specifies the delay in transform (tf) data that is tolerable in seconds. This parameter serves as a safeguard to losing a link in the tf tree while still allowing an amount of latency the user is comfortable with to exist in the system. For example, a transform being 0.2 seconds out-of-date may be tolerable, but a transform being 8 seconds out of date is not. If the tf transform between the coordinate frames specified by the global_frame and robot_base_frame parameters is transform_tolerance seconds older than ros::Time::now(), then the navigation stack will stop the robot. 
+~<name>/update_frequency (double, default: 5.0)
+	The frequency in Hz for the map to be updated. 
+~<name>/publish_frequency (double, default: 0.0)
+	The frequency in Hz for the map to be publish display information. 
+~<name>/rolling_window (bool, default: false)
+	Whether or not to use a rolling window version of the costmap. If the static_map parameter is set to true, this parameter must be set to false. 
+~<name>/always_send_full_costmap (bool, default: false)
+	If true the full costmap is published to "~<name>/grid" every update. If false only the part of the costmap that has changed is published on the "~<name>/grid_updates" topic. 
+~<name>/width (int, default: 10)
+	The width of the map in meters. 
+~<name>/height (int, default: 10)
+	The height of the map in meters. 
+~<name>/resolution (double, default: 0.05)
+	The resolution of the map in meters/cell. 
+~<name>/origin_x (double, default: 0.0)
+	The x origin of the map in the global frame in meters. 
+~<name>/origin_y (double, default: 0.0)
+	The y origin of the map in the global frame in meters. 
